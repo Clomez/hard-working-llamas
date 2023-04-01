@@ -1,13 +1,8 @@
 from llama_index import download_loader, GPTSimpleVectorIndex, ServiceContext
-from pathlib import Path
-from llama_cpp import Llama
-from langchain.chains.question_answering import load_qa_chain
 from llama_index import LangchainEmbedding
 from llama_index import LLMPredictor, GPTSimpleVectorIndex, ServiceContext
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
-
-from langchain.llms.base import LLM
-from typing import Optional, List, Mapping, Any
+from run_env import *
 
 from pathlib import Path
 from llama_cpp import Llama
@@ -15,14 +10,9 @@ from langchain.llms.base import LLM
 
 from typing import Optional, List, Mapping, Any
 
-# ORIGINAL
-#
 # Load array of wikipedia articles to llama model
 # Using local llama model and huggingface embeding
 # NO API KEY NEEDED
-
-## LLama wrapper class
-## TODO: into separate file u go
 class LlamaLLM(LLM):
     model_path: str
     llm: Llama
@@ -44,25 +34,25 @@ class LlamaLLM(LLM):
     def _identifying_params(self) -> Mapping[str, Any]:
         return {"model_path": self.model_path}
 
+# Wiki articles
+inputArray = ['https://www.youtube.com/watch?v=gw7mgiROG-k', 
+              'https://www.youtube.com/watch?v=-V1Fwj6A1Gs'] 
 
-
-# Global shaits
-inputArray = ['Berlin', 'Rome', 'Tokyo', 'Canberra', 'Santiago'] # Wiki articles
-
-# Internal magic
+# Global shaits & Internal magic
 index_set = {}
 doc_set = {}
 all_docs = []
 
-# Loader
-WikipediaReader = download_loader("WikipediaReader")
-loader = WikipediaReader()
+print("config " + "Path=" + path_to_model)
+
+YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")
+loader = YoutubeTranscriptReader()
 
 # load in HF embedding model from langchain
 embed_model = LangchainEmbedding(HuggingFaceEmbeddings())
 
 # load model, llama
-llm_predictor = LLMPredictor(llm=LlamaLLM(model_path="../../../Downloads/LLaMA-ggml-4bit_2023-03-20/7B_llama_20-3/ggml-model-q4_0.bin"))
+llm_predictor = LLMPredictor(llm=LlamaLLM(model_path=path_to_model))
 
 # service context generation
 service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=512, embed_model=embed_model)
@@ -70,7 +60,7 @@ service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chun
 
 # iterate data-loading
 for i in inputArray:
-    year_docs = loader.load_data(pages=[i])
+    year_docs = loader.load_data(ytlinks=[i])
 
     # insert year metadata into each year
     for d in year_docs:
