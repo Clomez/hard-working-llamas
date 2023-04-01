@@ -1,5 +1,12 @@
 # hard-working-llamas
 
+NO API KEY NEEDED
+
+requirements:
+- llama model
+- python3 & pip
+- Huggingface embeded model - downloadable via pip
+
 Example motivation code for making llamas work for you!
 
 Example: 
