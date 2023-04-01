@@ -1,6 +1,6 @@
 # hard-working-llamas
-llama-index-HF-chainin-tool
-Example motivation code for making llamas work for you!
+- llama-index-HF-chainin-tool
+- Example motivation code for making llamas work for you!
 
 NO API KEY NEEDED
 
