@@ -15,6 +15,10 @@ example: path_to_model="path/to/model/model.bin"
 2. Install needed packages
 3. run script 'python3 hard-working-llama.py'
 
+1. Insert question parameters into hwll-use-json.py
+2. Insert JSON file into hwll-use-json.py
+2. Run hwll-use-json.py
+
 # Info / content
 Example motivation code for making llamas work for you!
 
@@ -31,3 +35,6 @@ Model: Llama 7B (tested)
 Embeded model: Embeded Huggingface
 
 Save indexes to disk
+
+3. hwll-use-json.py
+Use JSON files to answer questions
