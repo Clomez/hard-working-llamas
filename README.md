@@ -2,6 +2,9 @@
 - llama-index-HF-chainin-tool
 - Example motivation code for making llamas work for you!
 
+1. Generate data from source (Wiki, Youtube, Reddit)
+2. Run model with generated JSON extension.
+
 NO API KEY NEEDED
 
 requirements:
