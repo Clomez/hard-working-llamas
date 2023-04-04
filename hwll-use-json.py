@@ -39,16 +39,16 @@ embed_model = LangchainEmbedding(HuggingFaceEmbeddings())
 llm_predictor = LLMPredictor(llm=LlamaLLM(model_path=path_to_model))
 
 # service context generation
-service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=512, embed_model=embed_model)
+service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=212, embed_model=embed_model)
 
 # load index
-new_index = GPTListIndex.load_from_disk('index_list_emb.json')
+new_index = GPTSimpleVectorIndex.load_from_disk(save_path='indexes/33B_huberman_index/index_0.json', service_context=service_context)
 
 # query with embed_model specified
 response = new_index.query(
-    "<query_text>", 
+    "Is heat exposure good for your health?", 
     mode="embedding", 
     verbose=True, 
-    service_context=service_context
 )
-print(response)
+rs=response.response
+print(rs)
