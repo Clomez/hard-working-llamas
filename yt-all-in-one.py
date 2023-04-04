@@ -104,7 +104,7 @@ query_configs = [
 ]
 # cur_index.query("Summary", mode="default")
 
-graph = ComposableGraph.from_indices(GPTListIndex, [cur_index, cur_index2, cur_index3, cur_index4, cur_index5, cur_index6], index_summaries=["heat exposure", "health"], service_context=service_context)
-response = graph.query("Summarize the text given", query_configs=query_configs, service_context=service_context)
+graph = ComposableGraph.from_indices(GPTListIndex, [cur_index, cur_index2, cur_index3, cur_index4, cur_index5, cur_index6], index_summaries=["heat exposure01", "heat exposure02", "heat exposure03", "heat exposure04", "heat exposure05", "heat exposure06"], service_context=service_context)
+response = graph.query(pt, query_configs=query_configs, service_context=service_context)
 
 print(response)
