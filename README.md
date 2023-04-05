@@ -22,22 +22,42 @@ example: path_to_model="path/to/model/model.bin"
 2. Insert JSON file into hwll-use-json.py
 2. Run hwll-use-json.py
 
-# Info / content
-Example motivation code for making llamas work for you!
+# Random tips
+- Make sure your run_env.py is properly created!! (see example in this file)
+- if using complicated inputArray, such as list of URL's, considere makinh another list
+for summary texts, special characters may break the string, and then the whole run.
 
-1. hard-working-llama - Original: 
+
+# Info / content
+## Script types
+Multi-stage:
+Ran in two parts.
+1. Download the data and make indexes
+2. save indexes to disk
+
+- Indexes and datasets can be reused from file
+- Shorter runtime
+- More complex
+
+Single stage.
+All in one
+1. Select datasources and run
+2. Save result to disk
+
+- Simple
+
+Archive - hard-working-llama - Original:
+Original script
 Dataloader: Wikipedia - array
 Model: Llama 7B (tested)
 Embeded model: Embeded Huggingface
 
-Save indexes to disk
+## Run env
+example run_env.py:
 
-2. hwll-youtube.py
-Dataloader: Youtube - array
-Model: Llama 7B (tested)
-Embeded model: Embeded Huggingface
+    LlamaArgs = {
+        "model_path": path_to_model,
+        "n_ctx": 2048,
+    }
 
-Save indexes to disk
-
-3. hwll-use-json.py
-Use JSON files to answer questions
+    path_to_model="path/to/model/model.bin"
