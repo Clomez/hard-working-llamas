@@ -13,6 +13,60 @@ import sys
 from datetime import datetime
 
 # ------------------
+### QUERY CONFIG
+# ------------------
+
+def query_configs():
+    return [
+        {
+            "index_struct_type": "tree",
+            "query_mode": "default",
+            "query_kwargs": {
+                "child_branch_factor": 2
+            }
+        }
+    ]
+
+def prompt():
+    a_name = "Havel"
+
+    personality = f"""
+You are {a_name}
+{a_name} is a scientist and assistant.
+{a_name} always does his best to answer questions honestly.
+if {a_name} dosent know the answer, he will not lie.
+{a_name} always tells you, how he got the answer.
+{a_name} always gives you sources for answer.
+{a_name} uses neutral language.
+{a_name} gives very long answers.
+{a_name} gives very detailed answers.
+    """
+
+    question = f"""
+{a_name} tell me about ancient history of Rome?
+    """
+
+    return personality + question
+
+# ------------------
+### UTIL
+# ------------------
+
+def writeResultToFile(response):
+    try:
+        f.write(response)
+        f.close()
+    except:
+        raise Exception("Cant write to file")
+
+def try_writing(f):
+    try:
+        f = open(f"log-{t}", "a")
+        return f
+    except:
+        raise Exception("Cant write to file")
+
+# ------------------
 # GLOBAL STATES
 # ------------------
 all_docs = [] # store Documents
@@ -30,6 +84,8 @@ f = try_writing()
 
 # If using complex names such as urls, considere making another
 inputArray = ['Berlin', 'Rome', 'Tokyo', 'Canberra', 'Santiago']
+
+print(str(prompt()))
 
 
 # ------------------
@@ -85,7 +141,7 @@ for i in all_docs:
 # ------------------
 # Summaries lenght MUST match input data lenght - all entries need summary
 graph = ComposableGraph.from_indices(GPTListIndex, all_indexes, index_summaries=inputArray, service_context=service_context)
-response = graph.query(prompt(), query_configs=query_configs(), service_context=service_context)
+response = graph.query(str(prompt()), query_configs=query_configs(), service_context=service_context)
 
 
 # ------------------
@@ -93,59 +149,3 @@ response = graph.query(prompt(), query_configs=query_configs(), service_context=
 # ------------------
 print(response)
 writeResultToFile(response)
-
-
-# ------------------
-### QUERY CONFIG
-# ------------------
-
-def query_configs():
-    return [
-        {
-            "index_struct_type": "tree",
-            "query_mode": "summarize",
-            "query_kwargs": {
-                "child_branch_factor": 2
-            }
-        }
-    ]
-
-def prompt():
-    a_name = "Havel"
-
-    personality = f"""
-        You are {a_name}
-        {a_name} is a scientist and assistant.
-        {a_name} always does his best to answer questions honestly.
-        if {a_name} dosent know the answer, he will not lie.
-        {a_name} always tells you, how he got the answer.
-        {a_name} always gives you sources for answer.
-        {a_name} uses neutral language.
-        {a_name} gives very long answers.
-        {a_name} gives very detailed answers.
-    """
-
-    question = f"""
-        {a_name} answer this question: can you tell me about ancient history of Rome?
-    """
-
-    return personality + question
-
-
-# ------------------
-### UTIL
-# ------------------
-
-def writeResultToFile(response):
-    try:
-        f.write(response)
-        f.close()
-    except:
-        raise Exception("Cant write to file")
-
-def try_writing(f):
-    try:
-        f = open(f"log-{t}", "a")
-        return f
-    except:
-        raise Exception("Cant write to file")
