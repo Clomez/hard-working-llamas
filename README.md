@@ -16,11 +16,11 @@ requirements:
 1. Create file "run_env.py" containing path to model
 example: path_to_model="path/to/model/model.bin"
 2. Install needed packages
-3. run script 'python3 hard-working-llama.py'
 
-1. Insert question parameters into hwll-use-json.py
-2. Insert JSON file into hwll-use-json.py
-2. Run hwll-use-json.py
+Two-stage-usage:
+In order to run two-stage loaders you need two scripts
+first one to load data into index and then those indexes to graph
+Then you use second script to query the graph from previous step.
 
 # Random tips
 - Make sure your run_env.py is properly created!! (see example in this file)
@@ -46,18 +46,23 @@ All in one
 
 - Simple
 
-Archive - hard-working-llama - Original:
-Original script
+Original:
+Archive - hard-working-llama:
 Dataloader: Wikipedia - array
 Model: Llama 7B (tested)
 Embeded model: Embeded Huggingface
 
+## Loaders
+Wiki, youtube, pds. ...
+- see loaders.md for loaders
+
 ## Run env
 example run_env.py:
+
+    path_to_model="path/to/model/model.bin"
 
     LlamaArgs = {
         "model_path": path_to_model,
         "n_ctx": 2048,
     }
 
-    path_to_model="path/to/model/model.bin"
