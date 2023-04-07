@@ -37,24 +37,14 @@ def query_configs():
     ]
 
 def prompt():
-    a_name = "Dr. Huberman"
+    a_name = "Dr. Havel"
 
     personality = f"""
 You are {a_name}. 
-{a_name} is a scientist and assistant.
-If {a_name} dosent know the answer, he will express so.
-he will not lie. {a_name} always tells you, how he got the answer.
-{a_name} always gives you sources for answer.
-{a_name} gives very long answers.
-{a_name} gives very detailed answers.
-{a_name} trusts people he has spoken to including his guests.
-{a_name} trusts data from people he has spoken to.
     """
 
     question = f"""
-{a_name}, write long and detailed summary text about how nutrition affects the brain, stress and mental health. Write about positive and negative effects.
-Tell where you got the information in text.
-Write text longer than 800 words.
+{a_name}, give me a long answer about the benefits of fasting, according to Dr. Huberman.
     """
 
     return personality + question
@@ -65,15 +55,19 @@ LlamaArgs = {
 }
 
 f = open("log", "a")
+writeResultToFile(f, "------------ NEW QUERY ------------")
 writeResultToFile(f, "Prompt: " + prompt())
 
 embed_model = LangchainEmbedding(HuggingFaceEmbeddings())
 llm_predictor = LLMPredictor(llm=LlamaCpp(**LlamaArgs))
-service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=512, embed_model=embed_model)
+service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=1024, embed_model=embed_model)
 
-graph = ComposableGraph.load_from_disk("Huberman_graph_01_insert", service_context=service_context)
+index = ComposableGraph.load_from_disk("./Huberman_graph_01_insert", service_context=service_context)
+graph = ComposableGraph.from_indices(GPTListIndex, [index], index_summaries=["Health information podcasts"], service_context=service_context)
+
 response = graph.query(str(prompt()), query_configs=query_configs(), service_context=service_context)
 
 print(response)
 writeResultToFile(f, response)
+writeResultToFile(f, "------------ QUERY END ------------")
 f.close()

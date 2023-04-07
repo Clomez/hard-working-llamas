@@ -38,6 +38,18 @@ inputArray = ["https://www.youtube.com/watch?v=wTBSGgbIvsY" , # meditation
     "https://www.youtube.com/watch?v=K4Ze-Sp6aUE" , # Eating
     "https://www.youtube.com/watch?v=9tRohh0gErM" , # Fasting
     "https://www.youtube.com/watch?v=yaWVflQolmM" , # fasting 2
+    "https://www.youtube.com/watch?v=ulHrUVV3Kq4", # stress
+    "https://www.youtube.com/watch?v=UIy-WQCZd4M", # Fitness & longitity
+    "https://www.youtube.com/watch?v=oNkDA2F7CjM", # endurance & fat loss
+    "https://www.youtube.com/watch?v=tLS6t3FVOTI", # supplements
+    "https://www.youtube.com/watch?v=UNCwdFxPtE8", # Exercise
+    "https://www.youtube.com/watch?v=T65RDBiB5Hs", # brain chem
+    "https://www.youtube.com/watch?v=szqPAPKE5tQ", # improved memory
+    "https://www.youtube.com/watch?v=azb3Ih68awQ", # Performance
+    "https://www.youtube.com/watch?v=17O5mgXZ9ZU", # Eating disorders
+    "https://www.youtube.com/watch?v=nwSkFq4tyC0", # learning & metabolism
+    "https://www.youtube.com/watch?v=xaE9XyMMAHY", # endurance & strenght
+    "https://www.youtube.com/watch?v=E7W4OQfJWdw" # Brains & performance
 ]
 
 
@@ -46,7 +58,7 @@ inputArray = ["https://www.youtube.com/watch?v=wTBSGgbIvsY" , # meditation
 # ------------------
 embed_model = LangchainEmbedding(HuggingFaceEmbeddings())
 llm_predictor = LLMPredictor(llm=LlamaCpp(**LlamaArgs))
-service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=512, embed_model=embed_model)
+service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=1024, embed_model=embed_model)
 
 
 # ------------------
@@ -64,7 +76,7 @@ for inputdata in inputArray:
     # Put metadata into data
     for doc_part in x_docs:
         try:
-            doc_part.extra_info = {"page": inputdata}
+            doc_part.extra_info = {"theme": inputdata}
         except:
             print("Data problem with input, skipping")
 
@@ -74,7 +86,7 @@ for inputdata in inputArray:
 ### INDEXES
 # ------------------
 
-base_index = GPTSimpleVectorIndex.from_documents(base_doc, service_context=service_context)
+base_index = GPTSimpleVectorIndex.load_from_disk("huberman_graph_03_xl", service_context=service_context)
 
 for doc in all_docs:
     try:

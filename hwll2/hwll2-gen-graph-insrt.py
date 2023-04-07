@@ -24,10 +24,6 @@ LlamaArgs = {
     "n_ctx": 2048,
 }
 
-# current time for log name
-now = datetime.now()
-t = now.strftime("%H:%M:%S")
-
 # If using complex names such as urls, considere making another
 base_data = "https://www.youtube.com/watch?v=tkH2-_jMCSk"
 inputArray = ["https://www.youtube.com/watch?v=wTBSGgbIvsY" , # meditation
@@ -46,7 +42,7 @@ inputArray = ["https://www.youtube.com/watch?v=wTBSGgbIvsY" , # meditation
 # ------------------
 embed_model = LangchainEmbedding(HuggingFaceEmbeddings())
 llm_predictor = LLMPredictor(llm=LlamaCpp(**LlamaArgs))
-service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=512, embed_model=embed_model)
+service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor, chunk_size_limit=1024, embed_model=embed_model)
 
 
 # ------------------
@@ -84,4 +80,4 @@ for doc in all_docs:
 
 
 graph = ComposableGraph.from_indices(GPTListIndex, [base_index], index_summaries=["Health information podcasts"], service_context=service_context)
-graph.save_to_disk("Huberman_graph_01_insert")
+graph.save_to_disk("huberman_graph_02_insert")
