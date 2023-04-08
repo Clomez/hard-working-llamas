@@ -12,6 +12,11 @@ from typing import Optional, List, Mapping, Any
 import sys
 from datetime import datetime
 
+########################################
+# Generate new graph from raw data
+# Save to disk
+########################################
+
 # ------------------
 # GLOBAL STATES
 # ------------------
@@ -24,34 +29,9 @@ LlamaArgs = {
     "n_ctx": 2048,
 }
 
-# current time for log name
-now = datetime.now()
-t = now.strftime("%H:%M:%S")
-
 # If using complex names such as urls, considere making another
 base_data = "https://www.youtube.com/watch?v=tkH2-_jMCSk"
-inputArray = ["https://www.youtube.com/watch?v=wTBSGgbIvsY" , # meditation
-    "https://www.youtube.com/watch?v=EQ3GjpGq5Y8" , # Sauna & heat
-    "https://www.youtube.com/watch?v=XcvhERcZpWw" , # Nutrients cold longevity
-    "https://www.youtube.com/watch?v=pq6WHJzOkno" , # Cold
-    "https://www.youtube.com/watch?v=DTCmprPCDqc" , # Nutrition, Exercise, Hormones, Vitality
-    "https://www.youtube.com/watch?v=K4Ze-Sp6aUE" , # Eating
-    "https://www.youtube.com/watch?v=9tRohh0gErM" , # Fasting
-    "https://www.youtube.com/watch?v=yaWVflQolmM" , # fasting 2
-    "https://www.youtube.com/watch?v=ulHrUVV3Kq4", # stress
-    "https://www.youtube.com/watch?v=UIy-WQCZd4M", # Fitness & longitity
-    "https://www.youtube.com/watch?v=oNkDA2F7CjM", # endurance & fat loss
-    "https://www.youtube.com/watch?v=tLS6t3FVOTI", # supplements
-    "https://www.youtube.com/watch?v=UNCwdFxPtE8", # Exercise
-    "https://www.youtube.com/watch?v=T65RDBiB5Hs", # brain chem
-    "https://www.youtube.com/watch?v=szqPAPKE5tQ", # improved memory
-    "https://www.youtube.com/watch?v=azb3Ih68awQ", # Performance
-    "https://www.youtube.com/watch?v=17O5mgXZ9ZU", # Eating disorders
-    "https://www.youtube.com/watch?v=nwSkFq4tyC0", # learning & metabolism
-    "https://www.youtube.com/watch?v=xaE9XyMMAHY", # endurance & strenght
-    "https://www.youtube.com/watch?v=E7W4OQfJWdw" # Brains & performance
-]
-
+inputArray = ["https://www.youtube.com/watch?v=wTBSGgbIvsY"]
 
 # ------------------
 ### INIT
@@ -68,7 +48,6 @@ YoutubeTranscriptReader = download_loader("YoutubeTranscriptReader")
 loader = YoutubeTranscriptReader()
 
 # Go over input data
-
 base_doc = loader.load_data(ytlinks=[base_data])
 for inputdata in inputArray:
     x_docs = loader.load_data(ytlinks=[inputdata]) # Doc
@@ -76,7 +55,7 @@ for inputdata in inputArray:
     # Put metadata into data
     for doc_part in x_docs:
         try:
-            doc_part.extra_info = {"theme": inputdata}
+            doc_part.extra_info = {"page": inputdata}
         except:
             print("Data problem with input, skipping")
 
@@ -86,7 +65,7 @@ for inputdata in inputArray:
 ### INDEXES
 # ------------------
 
-base_index = GPTSimpleVectorIndex.load_from_disk("huberman_graph_03_xl", service_context=service_context)
+base_index = GPTSimpleVectorIndex.from_documents(base_doc, service_context=service_context)
 
 for doc in all_docs:
     try:
@@ -96,4 +75,4 @@ for doc in all_docs:
 
 
 graph = ComposableGraph.from_indices(GPTListIndex, [base_index], index_summaries=["Health information podcasts"], service_context=service_context)
-graph.save_to_disk("Huberman_graph_01_insert")
+graph.save_to_disk("huberman_graph_03_xl")

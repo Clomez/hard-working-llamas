@@ -1,3 +1,8 @@
 run_env.py
 /__pycache__
-/output
+/output/*.html
+/md/*
+/tests
+/graph_models/abby/*
+/graph_models/hubert/*
+/archive/*

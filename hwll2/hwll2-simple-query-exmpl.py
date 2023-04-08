@@ -12,11 +12,9 @@ from typing import Optional, List, Mapping, Any
 import sys
 
 
-##########################
-# Query Graph from disk
-# - Write answer to disk
-# - Child branch factor default: 1
-##########################
+#################################
+# Query existing graph from disk
+#################################
 
 def writeResultToFile(f, response):
     try:

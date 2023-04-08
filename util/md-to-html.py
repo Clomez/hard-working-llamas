@@ -4,9 +4,13 @@ from pathlib import Path
 from datetime import datetime
 import time
 
-file_to_load = "./huberman_final01.md"
-output_file = "output/huberman_index.html"
-title="Huberman index test 02"
+########################################
+# Turn MD file into bootstap HTML
+########################################
+
+file_to_load = "../md/new.md"
+output_file = "../output/huberman_03_long_questionlist.html"
+title="Huberman 03"
 date_time = datetime.now()
 
 def head():    
