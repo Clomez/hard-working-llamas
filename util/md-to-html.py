@@ -4,13 +4,15 @@ from pathlib import Path
 from datetime import datetime
 import time
 
+import re
+
 ########################################
 # Turn MD file into bootstap HTML
 ########################################
 
-file_to_load = "../md/new.md"
-output_file = "../output/huberman_03_long_questionlist.html"
-title="Huberman 03"
+file_to_load = "../md/hubert_first_pt_02.md"
+output_file = "../output/hubert_first_pt_02.html"
+title="News v1"
 date_time = datetime.now()
 
 def head():    

@@ -16,6 +16,11 @@ import sys
 # Query existing graph from disk
 #################################
 
+LlamaArgs = {
+    "model_path": path_to_model,
+    "n_ctx": 2048,
+}
+
 def writeResultToFile(f, response):
     try:
         wr = str(response) + "\n"
@@ -34,27 +39,23 @@ def query_configs():
         }
     ]
 
-def prompt():
-    a_name = "Dr. Havel"
+# Personality
+a_name = "XX"
 
-    personality = f"""
-You are {a_name}. 
-    """
+personality = f"""
+You are {a_name}. You like to write DETAILED but easy to understand political information for the public.
+Start every ANSWER with "Abby S. > ".
+You are VERY WELL educated on politics.
+Don't  tell me who you are when answering.
+Don't  use word "Answer" when answering.
+All answers you give, are at least 100 words long, if possible.
+At the end of the answer, try to give more information about events and people in your ANSWER. 
+"""
 
-    question = f"""
-{a_name}, give me a long answer about the benefits of fasting, according to Dr. Huberman.
-    """
 
-    return personality + question
-
-LlamaArgs = {
-    "model_path": path_to_model,
-    "n_ctx": 2048,
-}
 
 f = open("log", "a")
 writeResultToFile(f, "------------ NEW QUERY ------------")
-writeResultToFile(f, "Prompt: " + prompt())
 
 embed_model = LangchainEmbedding(HuggingFaceEmbeddings())
 llm_predictor = LLMPredictor(llm=LlamaCpp(**LlamaArgs))
